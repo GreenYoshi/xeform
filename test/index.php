@@ -30,11 +30,33 @@ $form_array = array(
             'not_null' => true,
             'character_limit' => 20
         )
+    ),
+    array(
+        'label' => 'Last Name',
+        'description' => 'This is where you enter your last name',
+        'editor_type' => 'text',
+        'db_field' => 'last_name',
+        'db_result' => 'Whitehall',
+        'rules' => array(
+            'not_null' => true,
+            'character_limit' => 50
+        )
+    ),
+    array(
+        'label' => 'Bio',
+        'description' => 'Talk about yourself!',
+        'editor_type' => 'textarea',
+        'db_field' => 'description',
+        'db_result' => 'This is a description about me. It&rsquo;s fantastic!',
+        'rules' => array(
+            'not_null' => true,
+            'character_limit' => 50
+        )
     )
 );
 $form_object = new XeForm('db', 'edit.php', 'POST', 'ulli');
-
-$form_output = $form_object->add_rows($form_array);
+$form_output = 
+$form_output = $form_object->rows($form_array);
 echo $form_output;
 
 ?>

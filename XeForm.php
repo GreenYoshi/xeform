@@ -44,44 +44,49 @@ class XeForm {
     private function xe_set_error($error_type) {
         $error_labels = array(
             'invalid_action_type' => 'There was a problem with your action type variable in XeForm.',
+            'invalid_editor_type' => 'The editor type you have selected does not exist',
             'invalid_markup_type' => 'There was a problem with your markup type variable in XeForm.'
         );
 
-        (empty($this->errors)) ? $this->errors = $error_labels[$error_type] : $this->errors .= '<br />' . $error_labels[$error_type];
+        (empty($this->errors)) ?
+                        $this->errors = '<span style="color: #ff0000;">' . $error_labels[$error_type] . '</span>' :
+                        $this->errors .= '<br /><span style="color: #ff0000;">' . $error_labels[$error_type] . '</span>';
     }
 
     public function xe_get_errors() {
-        return $this->errors;
+        return $this->wrap_content($this->errors);
     }
-    
-    /* HELPERS */
-    
+
+    /* LABELS & HELPERS */
+
     private function wrap_content($meat) {
-        return $this->wrapper['left'].$meat.$this->wrapper['right'];
+        return $this->wrapper['left'] . $meat . $this->wrapper['right'];
     }
-    
-    private function format_attributes ($attributes) {
-        $attribute_string ='';
+
+    private function format_attributes($attributes) {
+        $attribute_string = '';
         foreach ($attributes as $key => $value) {
             if (!empty($value))
-                $attribute_string .= $key . '="' . $value . '" ';
+                $attribute_string .= $key . ' = "' . $value . '" ';
         }
         return $attribute_string;
     }
 
-    /* LABEL */
-
     private function labels($info) {
-        return $this->wrapper['left']
-                . '<label for="' . $info['db_field'] . '">'
-                . $info['label']
-                . '</label>'
-                . $this->wrapper['right']
-                . $this->wrapper['left']
-                . '<label for="' . $info['db_field'] . '">'
-                . $info['description']
-                . '</label>'
-                . $this->wrapper['right'];
+        return $this->wrap_content('<label for = "' . $info['db_field'] . '">' . $info['label'] . '</label>')
+                . $this->wrap_content('<label for = "' . $info['db_field'] . '">' . $info['description'] . '</label>');
+    }
+
+    private function rules($rules) {
+        $attributes = array(
+            'type' => 'hidden',
+            'class' => 'rules',
+            'name' => 'rules',
+        );
+        foreach ($rules as $key => $value) {
+            $attributes['data-' . $key] = $value;
+        }
+        return $this->wrap_content('<input ' . $this->format_attributes($attributes) . ' />');
     }
 
     /* ROW TYPES */
@@ -100,17 +105,24 @@ class XeForm {
 
     /* MAIN LOOP */
 
-    public function add_rows($row_info = array()) {
+    public function rows($row_info = array()) {
         // public function row($label,$description,$editorType,$dbfield,$dbresult,$rules = array())
         // ACCEPTED ASSOCIATIONS: LABEL, DESCRIPTION, EDITOR_TYPE, DB_FIELD, DB_RESULT, RULES
         $this->output = '';
         for ($i = 0; $i < count($row_info); $i++) {
             $this->output .= $this->wrapper['outer_left'];
             $this->output .= $this->labels($row_info[$i]);
-            $this->output .= $this->{$row_info[$i]['editor_type']}($row_info[$i]);
+            $this->output .= (method_exists($this, $row_info[$i]['editor_type'])) ?
+                    $this->{$row_info[$i]['editor_type']}($row_info[$i]) :
+                    $this->xe_set_error('invalid_editor_type');
+            $this->output .= $this->rules($row_info[$i]['rules']);
+            if (!empty($this->errors))
+                $this->output .= $this->xe_get_errors();
             $this->output .= $this->wrapper['outer_right'];
-            //$this->rules($row_info[$i]['rules']);
         }
+
+
+
         return $this->output;
     }
 
