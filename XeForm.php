@@ -63,7 +63,7 @@ class XeForm {
         return $this->wrapper['left'] . $meat . $this->wrapper['right'];
     }
 
-    private function _format_attributes($attributes, $all_data_attributes) {
+    private function _format_attributes($attributes) {
         $attribute_string = '';
         foreach ($attributes as $key => $value) {
             if (!empty($value))
