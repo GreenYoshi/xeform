@@ -9,7 +9,7 @@ Getting started with XeForm
 ======
 1. Download a copy of XeForm.php
 2. Include a link to your local copy of XeForm.php into whatever code needs it
-3. Follow the form array example found in */test/index.php*
+3. Follow the form array example found in */example/index.php*
 
 Current Usage
 ======
