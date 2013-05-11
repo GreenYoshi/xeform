@@ -102,9 +102,34 @@ class XeForm {
         );
         return $this->wrap_content('<input ' . $this->format_attributes($attributes) . ' />');
     }
+    
+    private function textarea($info) {
+        $attributes = array(
+            'type' => 'text',
+            'class' => 'xeform_input_text',
+            'name' => $info['db_field'],
+            'id' => $info['db_field'],
+            'maxlength' => (!empty($info['rules']['character_limit'])) ? $info['rules']['character_limit'] : ''
+        );
+        return $this->wrap_content('<textarea ' . $this->format_attributes($attributes) . ' >'.$info['db_result'].'</textarea>');
+    }
 
-    /* MAIN LOOP */
+    /* PUBLIC METHODS */
 
+    public function open_form() {
+        return '<form enctype="multipart/form-data" action="'.$this->action_location.'" method="'.$this->action_type.'">';
+;
+    }
+    
+    public function close_form() {
+        return '</form>';
+    }
+    
+    public function buttons() {
+        return 	'<input type="submit" class="xeform_button submit" name="action" value="Edit" class="button_submit_edit" />';
+;
+    }
+    
     public function rows($row_info = array()) {
         // public function row($label,$description,$editorType,$dbfield,$dbresult,$rules = array())
         // ACCEPTED ASSOCIATIONS: LABEL, DESCRIPTION, EDITOR_TYPE, DB_FIELD, DB_RESULT, RULES

@@ -54,9 +54,12 @@ $form_array = array(
         )
     )
 );
-$form_object = new XeForm('db', 'edit.php', 'POST', 'ulli');
-$form_output = 
-$form_output = $form_object->rows($form_array);
+$form_object = new XeForm('db', 'dummy.php', 'POST', 'ulli');
+$form_output = $form_object->open_form();
+$form_output .= $form_object->buttons();
+$form_output .= $form_object->rows($form_array);
+$form_output .= $form_object->buttons();
+$form_output .= $form_object->close_form();
 echo $form_output;
 
 ?>
