@@ -25,7 +25,7 @@ Main attributes
 
 Supported editor types
 ----
-Currently, only *text* and *textarea*. Nothing exciting, yet.
+Currently, only *text*, *password* and *textarea*. Nothing exciting, yet.
 
 Supported rules
 ----

@@ -36,7 +36,7 @@ class XeForm {
     }
 
     public function __destruct() {
-        
+        return;
     }
 
     /* Localised XeError function for standalone version */
@@ -54,30 +54,42 @@ class XeForm {
     }
 
     public function xe_get_errors() {
-        return $this->wrap_content($this->errors);
+        return $this->_wrap_content($this->errors);
     }
 
     /* LABELS & HELPERS */
 
-    private function wrap_content($meat) {
+    private function _wrap_content($meat) {
         return $this->wrapper['left'] . $meat . $this->wrapper['right'];
     }
 
-    private function format_attributes($attributes) {
+    private function _format_attributes($attributes, $all_data_attributes) {
         $attribute_string = '';
         foreach ($attributes as $key => $value) {
             if (!empty($value))
-                $attribute_string .= $key . ' = "' . $value . '" ';
+                $attribute_string .= $key . '="' . $value . '" ';
         }
         return $attribute_string;
     }
 
-    private function labels($info) {
-        return $this->wrap_content('<label for = "' . $info['db_field'] . '">' . $info['label'] . '</label>')
-                . $this->wrap_content('<label for = "' . $info['db_field'] . '">' . $info['description'] . '</label>');
+    private function _labels($info) {
+        return $this->_wrap_content('<label for="' . $info['db_field'] . '">' . $info['label'] . '</label>')
+                . $this->_wrap_content('<label for="' . $info['db_field'] . '">' . $info['description'] . '</label>');
     }
 
-    private function rules($rules) {
+    private function _input_tag($type, $info) {
+        $attributes = array(
+            'type' => $type,
+            'class' => 'xeform_input_' . $type,
+            'name' => $info['db_field'],
+            'id' => $info['db_field'],
+            'value' => ($type !== 'password') ? $info['db_result'] : '',
+            'maxlength' => (!empty($info['rules']['character_limit'])) ? $info['rules']['character_limit'] : ''
+        );
+        return $this->_wrap_content('<input ' . $this->_format_attributes($attributes) . ' />');
+    }
+
+    private function _rules($rules) {
         $attributes = array(
             'type' => 'hidden',
             'class' => 'rules',
@@ -86,68 +98,56 @@ class XeForm {
         foreach ($rules as $key => $value) {
             $attributes['data-' . $key] = $value;
         }
-        return $this->wrap_content('<input ' . $this->format_attributes($attributes) . ' />');
+        return $this->_wrap_content('<input ' . $this->_format_attributes($attributes) . ' />');
     }
 
     /* ROW TYPES */
 
     private function text($info) {
-        $attributes = array(
-            'type' => 'text',
-            'class' => 'xeform_input_text',
-            'name' => $info['db_field'],
-            'id' => $info['db_field'],
-            'value' => $info['db_result'],
-            'maxlength' => (!empty($info['rules']['character_limit'])) ? $info['rules']['character_limit'] : ''
-        );
-        return $this->wrap_content('<input ' . $this->format_attributes($attributes) . ' />');
+        return $this->_input_tag('text', $info);
     }
-    
+
+    private function password($info) {
+        return $this->_input_tag('password', $info);
+    }
+
     private function textarea($info) {
         $attributes = array(
-            'type' => 'text',
-            'class' => 'xeform_input_text',
+            'class' => 'xeform_input_textarea',
             'name' => $info['db_field'],
             'id' => $info['db_field'],
             'maxlength' => (!empty($info['rules']['character_limit'])) ? $info['rules']['character_limit'] : ''
         );
-        return $this->wrap_content('<textarea ' . $this->format_attributes($attributes) . ' >'.$info['db_result'].'</textarea>');
+        return $this->_wrap_content('<textarea ' . $this->_format_attributes($attributes) . ' >' . $info['db_result'] . '</textarea>');
     }
 
     /* PUBLIC METHODS */
 
     public function open_form() {
-        return '<form enctype="multipart/form-data" action="'.$this->action_location.'" method="'.$this->action_type.'">';
-;
+        return '<form enctype="multipart/form-data" action="' . $this->action_location . '" method="' . $this->action_type . '">';
     }
-    
+
     public function close_form() {
         return '</form>';
     }
-    
+
     public function buttons() {
-        return 	'<input type="submit" class="xeform_button submit" name="action" value="Edit" class="button_submit_edit" />';
-;
+        return '<input type="submit" class="xeform_button_submit" name="action" value="Edit" />';
     }
-    
+
     public function rows($row_info = array()) {
-        // public function row($label,$description,$editorType,$dbfield,$dbresult,$rules = array())
-        // ACCEPTED ASSOCIATIONS: LABEL, DESCRIPTION, EDITOR_TYPE, DB_FIELD, DB_RESULT, RULES
         $this->output = '';
         for ($i = 0; $i < count($row_info); $i++) {
             $this->output .= $this->wrapper['outer_left'];
-            $this->output .= $this->labels($row_info[$i]);
+            $this->output .= $this->_labels($row_info[$i]);
             $this->output .= (method_exists($this, $row_info[$i]['editor_type'])) ?
                     $this->{$row_info[$i]['editor_type']}($row_info[$i]) :
                     $this->xe_set_error('invalid_editor_type');
-            $this->output .= $this->rules($row_info[$i]['rules']);
+            $this->output .= $this->_rules($row_info[$i]['rules']);
             if (!empty($this->errors))
                 $this->output .= $this->xe_get_errors();
             $this->output .= $this->wrapper['outer_right'];
         }
-
-
-
         return $this->output;
     }
 

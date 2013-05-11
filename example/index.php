@@ -52,6 +52,17 @@ $form_array = array(
             'not_null' => true,
             'character_limit' => 50
         )
+    ),
+    array(
+        'label' => 'Password',
+        'description' => 'Test out a password. Not like it will be doing much',
+        'editor_type' => 'password',
+        'db_field' => 'password',
+        'db_result' => 'test',
+        'rules' => array(
+            'not_null' => true,
+            'character_limit' => 50
+        )
     )
 );
 $form_object = new XeForm('db', 'dummy.php', 'POST', 'ulli');
