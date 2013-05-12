@@ -1,7 +1,7 @@
 <?php
 
 /**
- * XiinEngine
+ * XiinEngine - XeForm Library PHP
  *
  * XiinEngine and its libraries are supplied under the MIT license. Please read license.md  in the root directory
  *
@@ -15,9 +15,9 @@ class XeForm {
 
     private $db, $action_location, $action_type, $markup_type, $errors, $output,
             $wrapper = array(
-                'outer_left' => '<ul>',
+                'outer_left' => '<ul id="xeform_wrapper">',
                 'outer_right' => '</ul>',
-                'left' => '<li>',
+                'left' => '<li class="xeform_form_entry">',
                 'right' => '</li>'
     );
 
@@ -73,8 +73,8 @@ class XeForm {
     }
 
     private function _labels($info) {
-        return $this->_wrap_content('<label for="' . $info['db_field'] . '">' . $info['label'] . '</label>')
-                . $this->_wrap_content('<label for="' . $info['db_field'] . '">' . $info['description'] . '</label>');
+        return $this->_wrap_content('<label class="xeform_label" for="' . $info['db_field'] . '">' . $info['label'] . '</label>')
+                . $this->_wrap_content('<label class="xeform_description" for="' . $info['db_field'] . '">' . $info['description'] . '</label>');
     }
 
     private function _input_tag($type, $info) {
@@ -92,7 +92,7 @@ class XeForm {
     private function _rules($rules) {
         $attributes = array(
             'type' => 'hidden',
-            'class' => 'rules',
+            'class' => 'xeform_rules',
             'name' => 'rules',
         );
         foreach ($rules as $key => $value) {
