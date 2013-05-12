@@ -51,8 +51,7 @@ $form_array = array(
         'db_field' => 'description',
         'db_result' => 'This is a description about me. It&rsquo;s fantastic!',
         'rules' => array(
-            'not_null' => true,
-            'character_limit' => 50
+            'not_null' => true
         )
     ),
     array(
