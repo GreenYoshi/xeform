@@ -4,7 +4,7 @@
     <title>XiinEngine Forms - Standalone version</title>
     <meta charset="utf-8">
     <script src="../jquery-1.9.1.min.js"></script>
-    <script src="../XeForm.js"></script>
+    <script src="../XeFormScripts.js"></script>
 </head>
 <body>
 <?php

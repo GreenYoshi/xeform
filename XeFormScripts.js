@@ -13,7 +13,7 @@
 var XeForm = {
     validate: {
         names: function(element) {
-            var regexp = '^[A-Za-z \\\'\\-]{1,'+element.getAttribute('maxlength')+'}$',
+            var regexp = '^[A-Za-z \'\\-]{1,'+element.getAttribute('maxlength')+'}$',
                 names = new RegExp(regexp);
             if (!element.value.match(names)) {
                 console.log('There are illegal characters in this field');
@@ -26,7 +26,7 @@ var XeForm = {
         },
         hideTooltip: function() {
             $('.xeform_description').closest('li').hide();
-        },        
+        }        
     },
     controller: {
         applyRules: function() {
