@@ -15,17 +15,25 @@ Current Usage
 ======
 Main attributes
 ----
-* **label** - *compulsory* - Creates a <code>label</code> tag and fills the <code>for=""</code> attribute with **db_field**
-* **description** - *compulsory* - Creates a <code>label</code> tag and fills the <code>for=""</code> attribute with **db_field**. The difference between this and **label** is that this will be handled by JavaScript as a *tooltip* later
-* **editor_type** - *compulsory* - specifies what input type you wish to use and populates the <code>type=""</code> attribute as such (or pull in the right tags in general). A full list of supported types are listed below
-* **db_field** - *compulsory* - This is used for your <code>id=""</code>, <code>name=""</code> in your input field, and <code>for=""</code> in your label fields.
-* **db_result** - *compulsory* - This populates your <code>value=""</code> field
+**Compulsory Attributes**
+This will be cleaned up over time to support more *optionals*
+* **label** - Creates a <code>label</code> tag and fills the <code>for=""</code> attribute with **db_field**
+* **editor_type** - specifies what input type you wish to use and populates the <code>type=""</code> attribute as such (or pull in the right tags in general). A full list of supported types are listed below
+* **db_field** - This is used for your <code>id=""</code>, <code>name=""</code> in your input field, and <code>for=""</code> in your label fields.
+* **db_result** - This populates your <code>value=""</code> field
 * **rules** - This is an array of *rules* for this particular row. Currently supported rules are documented below
 
+**Optional Attributes**
+* **description** - *optional* - Creates a <code>label</code> tag and fills the <code>for=""</code> attribute with **db_field**. The difference between this and **label** is that this will be handled by JavaScript as a *tooltip* later
+* **recaptcha_key** - Use this in line with the *recaptcha* editor type. This value should be your public key provided by Google
 
 Supported editor types
 ----
-Currently, only *text*, *password* and *textarea*. Nothing exciting, yet.
+* **readonly** - If you want a simple read-only area seamlessly added as part of the XeForm structure, use this option
+* **text** - Your basic, single-line text field. *supports not_null and character_limit rule*
+* **textarea** - Your larger textarea field. *supports not_null and character_limit rule*
+* **password** - Your basic, single-line password field. *supports not_null and character_limit rule*
+* **recaptcha** - This adds a recaptcha box to the form. *supports not_null rule*
 
 Supported rules
 ----

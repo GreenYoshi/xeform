@@ -73,8 +73,12 @@ class XeForm {
     }
 
     private function _labels($info) {
-        return $this->_wrap_content('<label class="xeform_label" for="' . $info['db_field'] . '">' . $info['label'] . '</label>')
-                . $this->_wrap_content('<label class="xeform_description" for="' . $info['db_field'] . '">' . $info['description'] . '</label>');
+        $label_content = '';
+        if (!empty($info['label'])) 
+            $label_content = $this->_wrap_content('<label class="xeform_label" for="' . $info['db_field'] . '">' . $info['label'] . '</label>');
+        if (!empty($info['description'])) 
+            $label_content .= $this->_wrap_content('<label class="xeform_description" for="' . $info['db_field'] . '">' . $info['description'] . '</label>');
+        return $label_content;
     }
 
     private function _input_tag($type, $info) {
@@ -110,6 +114,10 @@ class XeForm {
     private function password($info) {
         return $this->_input_tag('password', $info);
     }
+    
+    private function readonly($info) {
+        return $this->_wrap_content($info['description']);
+    }
 
     private function textarea($info) {
         $attributes = array(
@@ -119,6 +127,11 @@ class XeForm {
             'maxlength' => (!empty($info['rules']['character_limit'])) ? $info['rules']['character_limit'] : ''
         );
         return $this->_wrap_content('<textarea ' . $this->_format_attributes($attributes) . ' >' . $info['db_result'] . '</textarea>');
+    }
+    
+    private function recaptcha($info) {
+        require_once('recaptchalib.php');
+        return $this->_wrap_content(recaptcha_get_html($info['recaptcha_key']));
     }
 
     /* PUBLIC METHODS */

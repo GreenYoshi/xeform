@@ -64,6 +64,26 @@ $form_array = array(
             'not_null' => true,
             'character_limit' => 50
         )
+    ),
+    array(
+        'label' => 'News Section',
+        'description' => 'This is a new section description',
+        'editor_type' => 'readonly',
+        'db_field' => '',
+        'db_result' => '',
+        'rules' => array(
+            'not_null' => true
+        )
+    ),
+    array(
+        'label' => 'Security check',
+        'editor_type' => 'recaptcha',
+        'recaptcha_key' => 'YOUR-PUBLIC-KEY-HERE',
+        'db_field' => 'recaptcha',
+        'db_result' => '',
+        'rules' => array(
+            'not_null' => true
+        )
     )
 );
 
